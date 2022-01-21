@@ -6,7 +6,6 @@
 const cors = require('cors')
 // CORS: hay que instalar una extension npm install cors
 
-const { response } = require('express')
 const express = require('express')
 
 const logger = require('./loggerMiddleware')
@@ -120,13 +119,14 @@ app.post('/api/notes/', (req, res) => {
 // Aqui solo llegará si no entra en ninguna de las de arriba
 app.use((req, res) => {
   console.log(res.path)
-  response.status(404).json({
+  res.status(404).json({
     error: 'Not found'
   })
 })
 
-// El entorno lo coge del deploy a heroku, si no existe coge el local
+// El environment lo coge del deploy a heroku, si no existe coge el local
 // Para el deploy en heroku hay que crear un Procfile y ejecutar un heroku create
+// luego hay que hacer un push a github y al git de heroku con git push heroku rama
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
