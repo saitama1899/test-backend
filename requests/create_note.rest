@@ -1,0 +1,14 @@
+POST  http://localhost:3001/api/notes 
+Content-Type: application/json
+
+{
+  "content": "Nota de prueba"
+}
+
+###
+
+POST  http://localhost:3001/api/notes 
+Content-Type: application/json
+
+{
+}

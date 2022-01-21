@@ -1,0 +1,3 @@
+GET http://localhost:3001/api/notes
+# Esta extension de VScode te ayuda a probar request sin usar postman
+# Puede ser una buena forma de documentar tu app
