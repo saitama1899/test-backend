@@ -125,7 +125,9 @@ app.use((req, res) => {
   })
 })
 
-const PORT = 3001
+// El entorno lo coge del deploy a heroku, si no existe coge el local
+// Para el deploy en heroku hay que crear un Procfile y ejecutar un heroku create
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
