@@ -106,7 +106,7 @@ app.post('/api/notes/', (req, res) => {
   const note = req.body
 
   if (!note || !note.content) {
-    res.status(400).json({
+    return res.status(400).json({
       error: 'note content is missing'
     })
   }
@@ -133,6 +133,9 @@ app.use(handleErrors)
 // Para el deploy en heroku hay que crear un Procfile y ejecutar un heroku create
 // luego hay que hacer un push a github y al git de heroku con git push heroku rama
 const PORT = process.env.PORT
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
+
+// Para usarla en los tests
+module.exports = { app, server }

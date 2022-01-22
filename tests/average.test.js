@@ -1,5 +1,6 @@
 const { average } = require('../utils/for_testing')
 
+// Pues saltarte tests indicando un .skip
 // El describe se utiliza para describir el contexto de un grupo de test
 // y de esta forma hacerlo mas legible en consola
 describe('average', () => {

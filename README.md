@@ -10,6 +10,8 @@
 >
 > - *nodemon* para actualizar los cambios sin reiniciar el servidor en local
 >
+> - *supertest* para tests relacionados con conexiones y peticiones
+>
 > #### Producción
 >
 > - *mongoose* para la conexion y manejo de la BD con mongodb cloud
