@@ -13,6 +13,7 @@ const cors = require('cors')
 // CORS: hay que instalar una extension npm install cors
 
 const express = require('express')
+
 const logger = require('./loggerMiddleware')
 const handleErrors = require('./middleware/handleErrors.js')
 const notFound = require('./middleware/notFound.js')
@@ -117,8 +118,8 @@ app.post('/api/notes/', (req, res) => {
   })
 
   newNote.save().then(savedNote => {
-    res.json(savedNote)
     res.status(201).json(newNote)
+    // res.json(savedNote)
   })
 })
 
