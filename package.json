@@ -9,8 +9,8 @@
     "lint": "eslint .",
     "std": "standard && node *.js",
     "test": "cross-env NODE_ENV=test jest --verbose --silent",
-    "test-notes": "cross-env NODE_ENV=test jest --verbose --silent tests/notes.test.js",
-    "test:watch": "npm run test -- --watch"
+    "test:watch": "npm run test -- --watch",
+    "test-notes": "cross-env NODE_ENV=test jest --verbose --silent tests/notes.test.js"
   },
   "keywords": [],
   "author": "",
