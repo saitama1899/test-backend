@@ -18,7 +18,8 @@ const logger = require('./loggerMiddleware')
 const handleErrors = require('./middleware/handleErrors.js')
 const notFound = require('./middleware/notFound.js')
 
-const Note = require('./models/Note')
+const usersRouter = require('./controllers/users.js')
+const notesRouter = require('./controllers/notes.js')
 
 const app = express()
 
@@ -61,71 +62,9 @@ app.get('/', (req, res) => {
 //   })
 // })
 
-// Refactor utilizando una función async
-app.get('/api/notes', async (req, res) => {
-  const notes = await Note.find({})
-  res.json(notes)
-})
+app.use('/api/notes', notesRouter)
 
-app.get('/api/notes/:id', async (req, res) => {
-  const { id } = req.params
-
-  try {
-    const note = await Note.findById(id)
-    res.json(note)
-  } catch (e) {
-    res.status(404).end()
-    console.error(e)
-  }
-})
-
-app.put('/api/notes/:id', (req, res, next) => {
-  const { id } = req.params
-  const note = req.body
-  const newNoteInfo = {
-    content: note.content,
-    important: note.important
-  }
-  // El segundo parametro es la nueva nota actualizada
-  // el tercer parametro indica si quieres que te devuelva el nuevo o el viejo (si no se indica es false)
-  Note.findByIdAndUpdate(id, newNoteInfo, { new: true })
-    .then(result => {
-      res.json(result)
-      res.status(200).end()
-    }).catch(error => next(error))
-    // De esta forma le indicamos que vaya al siguiente middleware que capture errores
-})
-
-app.delete('/api/notes/:id', async (req, res, next) => {
-  const { id } = req.params
-  try {
-    await Note.findByIdAndDelete(id)
-    res.status(204).end()
-  } catch (e) { next(e) }
-  // De esta forma le indicamos que vaya al siguiente middleware que capture errores
-})
-
-app.post('/api/notes/', async (req, res, next) => {
-  const note = req.body
-
-  if (!note || !note.content) {
-    return res.status(400).json({
-      error: 'note content is missing'
-    })
-  }
-  const newNote = new Note({
-    content: note.content,
-    date: new Date().toISOString(),
-    important: typeof note.important !== 'undefined' ? note.important : false
-    // Con esto le indicas el default y que sea opcional
-  })
-
-  try {
-    const savedNote = await newNote.save()
-    res.status(201).json(newNote)
-    res.json(savedNote)
-  } catch (e) { next(e) }
-})
+app.use('/api/users', usersRouter)
 
 // Aqui solo llegará si no entra en ninguna de las de arriba
 // El orden de estos middlewares es importante

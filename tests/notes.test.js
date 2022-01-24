@@ -59,7 +59,7 @@ describe('GET Notes', () => {
   })
 
   // Los tests tienen que ser predecibles y siempre dar el resultado esperado
-  test('there are three notes', async () => {
+  test('correct amount of notes returned', async () => {
     const { response } = await getAllContentFromNotes()
     expect(response.body).toHaveLength(notes.length)
   })
@@ -99,6 +99,27 @@ describe('POST Notes', () => {
   
     const { response } = await getAllContentFromNotes()
     expect(response.body).toHaveLength(notes.length)
+  })
+})
+
+describe('PUT Notes', () => {
+
+  test('a note can be modified', async () => {
+    const { response: firstResponse } = await getAllContentFromNotes()
+    const { body: notes } = firstResponse
+
+    const modifiedNote = {
+      content: 'Esto es una nota de testing modificada',
+      important: false
+    }
+    await api
+      .put(`/api/notes/${notes[0].id}`)
+      .send(modifiedNote)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const { contents } = await getAllContentFromNotes()
+    expect(contents).not.toContain(notes[0].content)
   })
 })
 
