@@ -54,26 +54,29 @@ app.get('/', (req, res) => {
   res.send('<h1>Hola mundo!</h1>')
 })
 
-app.get('/api/notes', (req, res) => {
-  Note.find({}).then(notes => {
-    res.json(notes)
-  })
+// Resolviendo la peticion con una promesa y resolviendo en then
+// app.get('/api/notes', (req, res) => {
+//   Note.find({}).then(notes => {
+//     res.json(notes)
+//   })
+// })
+
+// Refactor utilizando una función async
+app.get('/api/notes', async (req, res) => {
+  const notes = await Note.find({})
+  res.json(notes)
 })
 
-app.get('/api/notes/:id', (req, res) => {
+app.get('/api/notes/:id', async (req, res) => {
   const { id } = req.params
-  Note.findById(id)
-    .then(note => {
-      if (note) {
-        res.json(note)
-      } else {
-        res.status(404).end()
-      }
-    })
-    .catch(e => {
-      console.error(e)
-      res.status(400).end()
-    })
+
+  try {
+    const note = await Note.findById(id)
+    res.json(note)
+  } catch (e) {
+    res.status(404).end()
+    console.error(e)
+  }
 })
 
 app.put('/api/notes/:id', (req, res, next) => {
@@ -93,16 +96,16 @@ app.put('/api/notes/:id', (req, res, next) => {
     // De esta forma le indicamos que vaya al siguiente middleware que capture errores
 })
 
-app.delete('/api/notes/:id', (req, res, next) => {
+app.delete('/api/notes/:id', async (req, res, next) => {
   const { id } = req.params
-  Note.findByIdAndDelete(id)
-    .then(result => {
-      res.status(204).end()
-    }).catch(error => next(error))
-    // De esta forma le indicamos que vaya al siguiente middleware que capture errores
+  try {
+    await Note.findByIdAndDelete(id)
+    res.status(204).end()
+  } catch (e) { next(e) }
+  // De esta forma le indicamos que vaya al siguiente middleware que capture errores
 })
 
-app.post('/api/notes/', (req, res) => {
+app.post('/api/notes/', async (req, res, next) => {
   const note = req.body
 
   if (!note || !note.content) {
@@ -117,10 +120,11 @@ app.post('/api/notes/', (req, res) => {
     // Con esto le indicas el default y que sea opcional
   })
 
-  newNote.save().then(savedNote => {
+  try {
+    const savedNote = await newNote.save()
     res.status(201).json(newNote)
-    // res.json(savedNote)
-  })
+    res.json(savedNote)
+  } catch (e) { next(e) }
 })
 
 // Aqui solo llegará si no entra en ninguna de las de arriba
