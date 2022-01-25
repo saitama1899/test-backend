@@ -1,6 +1,7 @@
 const notesRouter = require('express').Router()
 const Note = require('../models/Note.js')
 const User = require('../models/User.js')
+const userExtractor = require('../middleware/userExtractor')
 
 notesRouter.get('/', async (req, res) => {
   const notes = await Note.find({}).populate('user', {
@@ -10,7 +11,7 @@ notesRouter.get('/', async (req, res) => {
   res.json(notes)
 })
 
-notesRouter.get('/:id', async (req, res) => {
+notesRouter.get('/:id', userExtractor, async (req, res) => {
   const { id } = req.params
 
   try {
@@ -25,7 +26,7 @@ notesRouter.get('/:id', async (req, res) => {
   }
 })
 
-notesRouter.put('/:id', async (req, res, next) => {
+notesRouter.put('/:id', userExtractor, async (req, res, next) => {
   const { id } = req.params
   const note = req.body
   const newNoteInfo = {
@@ -41,7 +42,7 @@ notesRouter.put('/:id', async (req, res, next) => {
   } catch (e) { next(e) }
 })
 
-notesRouter.delete('/:id', async (req, res, next) => {
+notesRouter.delete('/:id', userExtractor, async (req, res, next) => {
   const { id } = req.params
   try {
     await Note.findByIdAndDelete(id)
@@ -50,12 +51,16 @@ notesRouter.delete('/:id', async (req, res, next) => {
   // De esta forma le indicamos que vaya al siguiente middleware que capture errores
 })
 
-notesRouter.post('/', async (req, res, next) => {
+// De segundo parametro le indicas que pase antes por el middleware que quieras
+// en este caso, para recuperar el id de usuario a partir del jwt
+notesRouter.post('/', userExtractor, async (req, res, next) => {
   const {
     content,
-    important = false, // Con esto le indicas el default y que sea opcional
-    userId
+    important = false // Con esto le indicas el default y que sea opcional
   } = req.body
+
+  // Sacar userid de request del middleware userExtractor
+  const { userId } = req
 
   const user = await User.findById(userId)
 

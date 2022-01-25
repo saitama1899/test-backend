@@ -20,6 +20,7 @@ const notFound = require('./middleware/notFound.js')
 
 const usersRouter = require('./controllers/users.js')
 const notesRouter = require('./controllers/notes.js')
+const loginRouter = require('./controllers/login.js')
 
 const app = express()
 
@@ -63,8 +64,8 @@ app.get('/', (req, res) => {
 // })
 
 app.use('/api/notes', notesRouter)
-
 app.use('/api/users', usersRouter)
+app.use('/api/login', loginRouter)
 
 // Aqui solo llegará si no entra en ninguna de las de arriba
 // El orden de estos middlewares es importante

@@ -27,3 +27,7 @@
 > - *bcrypt* para encriptar información sensible
 >
 > - *mongoose-unique-validator* para definir valores que deben ser unicos en los modelos
+> - *jsonwebtoken* para la autenticación de usuarios
+>
+>
+>

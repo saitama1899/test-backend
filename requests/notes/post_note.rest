@@ -1,12 +1,12 @@
 POST  http://localhost:3001/api/notes 
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZWZhYzUwZmY0OGVlN2EyZDAwNWNmNCIsInVzZXJuYW1lIjoiZXJpY3Rlc3QiLCJpYXQiOjE2NDMxMjU3NjksImV4cCI6MTY0MzczMDU2OX0.MncHCKT44qloeCPV-rsDJyAsyrVxENELWbjVoXqdWQM
 
 {
-  "content": "Test note from vcode request",
-  "important": true,
-  "userId": "61efac50ff48ee7a2d005cf4"
+  "content": "Test note from vcode request con middleware",
+  "important": true
 }
- 
+
 ###
 
 POST  http://localhost:3001/api/notes 

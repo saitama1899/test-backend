@@ -1,5 +1,6 @@
 PUT http://localhost:3001/api/notes/61eac3b3339786f0f6d7d97c
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZWZhYzUwZmY0OGVlN2EyZDAwNWNmNCIsInVzZXJuYW1lIjoiZXJpY3Rlc3QiLCJpYXQiOjE2NDMxMjU3NjksImV4cCI6MTY0MzczMDU2OX0.MncHCKT44qloeCPV-rsDJyAsyrVxENELWbjVoXqdWQM
 
 {
   "content": "Hola hola",
