@@ -1,8 +1,13 @@
 const { Schema, model } = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
-// Crear un esquema para el modelo definiendo tipos. Id no hace falta porque mongodb lo genera
+// Usamos el unique en username para definir que sea unico
+
 const userSchema = new Schema({
-  username: String,
+  username: {
+    type: String,
+    unique: true
+  },
   name: String,
   passwordHash: String,
   notes: [{
@@ -22,7 +27,7 @@ userSchema.set('toJSON', {
   }
 })
 
-// crear  Modelo
+userSchema.plugin(uniqueValidator)
 const User = model('User', userSchema)
 
 module.exports = User

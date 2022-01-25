@@ -23,3 +23,7 @@
 > - *cross-env* para configurar los distintos entornos y hacerlo funcional en windows y linux
 >
 > - *dotenv* para poder utilizar variables de entorno desde el archivo .env
+>
+> - *bcrypt* para encriptar información sensible
+>
+> - *mongoose-unique-validator* para definir valores que deben ser unicos en los modelos

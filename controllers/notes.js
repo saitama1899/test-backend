@@ -1,8 +1,12 @@
 const notesRouter = require('express').Router()
 const Note = require('../models/Note.js')
+const User = require('../models/User.js')
 
 notesRouter.get('/', async (req, res) => {
-  const notes = await Note.find({})
+  const notes = await Note.find({}).populate('user', {
+    username: 1,
+    name: 1
+  })
   res.json(notes)
 })
 
@@ -10,7 +14,10 @@ notesRouter.get('/:id', async (req, res) => {
   const { id } = req.params
 
   try {
-    const note = await Note.findById(id)
+    const note = await Note.findById(id).populate('user', {
+      username: 1,
+      name: 1
+    })
     res.json(note)
   } catch (e) {
     res.status(404).end()
@@ -44,24 +51,33 @@ notesRouter.delete('/:id', async (req, res, next) => {
 })
 
 notesRouter.post('/', async (req, res, next) => {
-  const note = req.body
+  const {
+    content,
+    important = false, // Con esto le indicas el default y que sea opcional
+    userId
+  } = req.body
 
-  if (!note || !note.content) {
+  const user = await User.findById(userId)
+
+  if (!content) {
     return res.status(400).json({
-      error: 'note content is missing'
+      error: 'required "content" field is missing'
     })
   }
   const newNote = new Note({
-    content: note.content,
+    content,
     date: new Date().toISOString(),
-    important: typeof note.important !== 'undefined' ? note.important : false
-    // Con esto le indicas el default y que sea opcional
+    important,
+    user: user._id
   })
 
   try {
     const savedNote = await newNote.save()
+    user.notes = user.notes.concat(savedNote._id)
+    await user.save()
+
     res.status(201).json(newNote)
-    res.json(savedNote)
+    // res.json(savedNote)
   } catch (e) { next(e) }
 })
 
