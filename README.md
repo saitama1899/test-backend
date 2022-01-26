@@ -27,7 +27,14 @@
 > - *bcrypt* para encriptar información sensible
 >
 > - *mongoose-unique-validator* para definir valores que deben ser unicos en los modelos
+>
 > - *jsonwebtoken* para la autenticación de usuarios
 >
 >
->
+
+Para el deploy a producción con heroku y mongodb atlas:
+- Crear un Procfile y ejecutar un heroku create
+- Push a github y despues al git de heroku con: git push heroku rama
+- Indicar en el package los distintos entornos
+- Indicar a heroku variables de entorno -> heroku config:set MONGO_DB_URI=blabla
+- Indicar en la ip whitelist de mongodb atlas la ip de heroku (solo se puede indicando anywhere: 0.0.0.0/0)
