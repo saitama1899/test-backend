@@ -7,6 +7,8 @@ const connectionString = NODE_ENV === 'test'
   ? MONGO_DB_URI_TEST
   : MONGO_DB_URI
 
+console.log(connectionString)
+
 // Conexión a mongodb
 mongoose.connect(connectionString)
   .then(() => {
